@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Save the Date</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,600;0,6..96,700;0,6..96,800;1,6..96,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=La+Belle+Aurore&family=Special+Elite&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* ══════════════ YOUR CONTROL PANEL ══════════════ */
+    :root {
+      --tv-scale: 01.05;
+      /* TV size: 0.85 smaller, 1.15 bigger */
+      --photo-gray: 0;
+      /* 1 = B&W, 0 = colour */
+      --photo-sepia: .4;
+      /* 0 = off … 1 = full sepia */
+      --finale-gray: 0;
+      /* same toggles for the last photo */
+      --finale-sepia: .4;
+
+      --fs-kicker: 12px;
+      --fs-names: clamp(48px, 13vw, 66px);
+      --fs-tv-word: clamp(15px, 6vw, 30px);
+      /* ✏️ TV Word font size (SAVE, THE, DATE, 11.25.26) */
+      --fs-details: 11px;
+      --fs-married: clamp(40px, 10.5vw, 54px);
+      --fs-formal: 19px;
+      --fs-coming: 13px;
+      --fs-count: 36px;
+      --fs-contact: 16px;
+
+      --maroon: #7a0e1e;
+      --maroon-deep: #4b0710;
+      --cream: #f6ead6;
+      --pink: #f3d7db;
+      --white: #fff6f3;
+      --gold: #caa25a;
+      --gold-dk: #6d5426;
+      --script: 'Great Vibes', cursive;
+      --serif: 'Cormorant Garamond', serif;
+      --hand: 'La Belle Aurore', cursive;
+      --type: 'Special Elite', monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      background: #000;
+      font-family: var(--serif);
+      overflow-x: hidden
+    }
+
+    body:not(.scrollable) {
+      overflow: hidden
+    }
+
+    /* no scrolling in the dark room */
+    button {
+      font-family: inherit;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: inherit
+    }
+
+    .app {
+      max-width: 430px;
+      margin: 0 auto;
+      background: var(--maroon);
+      min-height: 100vh;
+      box-shadow: 0 0 0 1px #2a0509;
+      position: relative
+    }
+
+    .ph {
+      filter: grayscale(var(--photo-gray)) sepia(var(--photo-sepia)) brightness(1.28) contrast(1.06) saturate(1.15)
+    }
+
+    /* dark room overlay */
+    .room {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      opacity: .94;
+      z-index: 90;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 25vh;
+      transition: opacity 1.6s ease;
+      cursor: pointer
+    }
+
+    body.lit .room {
+      opacity: 0;
+      pointer-events: none
+    }
+
+    .room-hint {
+      font-family: var(--type);
+      font-size: 12px;
+      letter-spacing: .3em;
+      color: #9c8b6d;
+      opacity: .6;
+      animation: blink 2s steps(2) infinite
+    }
+
+    /* film grain */
+    .grain {
+      position: fixed;
+      inset: -50%;
+      width: 200%;
+      height: 200%;
+      pointer-events: none;
+      z-index: 70;
+      opacity: .05;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      animation: grain 1.2s steps(4) infinite
+    }
+
+    @keyframes grain {
+      0% {
+        transform: translate(0, 0)
+      }
+
+      25% {
+        transform: translate(-2%, 3%)
+      }
+
+      50% {
+        transform: translate(3%, -2%)
+      }
+
+      75% {
+        transform: translate(-3%, -3%)
+      }
+
+      100% {
+        transform: translate(2%, 2%)
+      }
+    }
+
+    /* ══════════ SCENE 1 — HERO / TV ══════════ */
+    .hero {
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 56px 16px 40px;
+      text-align: center
+    }
+
+    .kicker {
+      font-size: var(--fs-kicker);
+      letter-spacing: .32em;
+      line-height: 2.1;
+      color: #f6e3d7;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, .5);
+      opacity: 0
+    }
+
+    .names {
+      font-family: var(--script);
+      font-weight: 400;
+      font-size: var(--fs-names);
+      line-height: 1.15;
+      color: var(--white);
+      margin-top: 6px;
+      text-shadow: 0 0 18px rgba(255, 190, 170, .45), 0 2px 6px rgba(0, 0, 0, .4);
+      opacity: 0
+    }
+
+    body.lit .kicker {
+      animation: floatDown 1.6s .4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+
+    body.lit .names {
+      animation: fadeUp 1s .8s both
+    }
+
+    .tv {
+      position: relative;
+      width: calc(min(92%, 400px)*var(--tv-scale));
+      margin-top: 26px
+    }
+
+    .tv-body {
+      display: flex;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid #2a1a0c;
+      background: repeating-linear-gradient(90deg, #4a2f18 0 4px, #5a3a1e 4px 8px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, .55), inset 0 2px 6px rgba(0, 0, 0, .6)
+    }
+
+    .tv-screenwrap {
+      flex: 1;
+      aspect-ratio: 4/3;
+      border: 5px solid #b98a4e;
+      box-shadow: 0 0 0 2px var(--gold-dk), inset 0 0 30px rgba(0, 0, 0, .8);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      background: #000
+    }
+
+    .tv-screenwrap canvas,
+    .tv-screenwrap img,
+    .tv-flash,
+    .crt,
+    .crton {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0
+    }
+
+    .tv-word {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bodoni Moda', 'Playfair Display', Didot, 'Bodoni MT', serif;
+      font-size: var(--fs-tv-word);
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-indent: .08em;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-shadow: 0 3px 14px rgba(0, 0, 0, .85), 0 1px 3px rgba(0, 0, 0, .9);
+      opacity: 0;
+      transition: opacity .25s ease;
+      z-index: 6;
+      text-align: center;
+      pointer-events: none;
+      max-width: 90%;
+      margin: auto;
+      white-space: nowrap;
+    }
+
+    .tv-word.show {
+      opacity: 1
+    }
+
+    .tv-flash {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: #fdf5e8;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 10;
+      transition: opacity 0.05s ease;
+    }
+
+    .tv-flash.on {
+      opacity: 1;
+    }
+
+    .crt {
+      background: #000
+    }
+
+    .crt::after {
+      content: "";
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      top: 50%;
+      height: 2px;
+      background: #fff;
+      box-shadow: 0 0 12px #fff;
+      transform: scaleX(0)
+    }
+
+    .crton {
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .crton i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 18px 6px rgba(255, 255, 255, .8)
+    }
+
+    .standby {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 6%;
+      font-family: var(--type);
+      color: #f6e3d7;
+      font-size: 8px;
+      letter-spacing: .25em;
+      opacity: 0
+    }
+
+    .tv[data-state="boot"] .crton {
+      opacity: 1
+    }
+
+    .tv[data-state="boot"] .crton i {
+      animation: dotGrow .9s ease-in forwards
+    }
+
+    .tv[data-state="static"] canvas {
+      opacity: 1
+    }
+
+    .tv[data-state="static"] .standby {
+      opacity: 1;
+      animation: blink 1.4s steps(2) infinite
+    }
+
+    .tv[data-state="save"] #slide1 {
+      opacity: 1
+    }
+
+    .tv[data-state="the"] #slide2 {
+      opacity: 1
+    }
+
+    .tv[data-state="date"] #slide3 {
+      opacity: 1
+    }
+
+    .tv[data-state="num"] #slide4 {
+      opacity: 1
+    }
+
+    .tv[data-state="off"] .crt {
+      opacity: 1
+    }
+
+    .tv[data-state="off"] .crt::after {
+      animation: crtline 1s ease forwards
+    }
+
+    .tv-panel {
+      width: 56px;
+      background: #17100a;
+      border-radius: 8px;
+      padding: 8px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px
+    }
+
+    .tv-knob {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #e8c67e, #8a6132 70%);
+      position: relative;
+      box-shadow: 0 0 0 3px #17100a, 0 0 0 4px var(--gold-dk)
+    }
+
+    .tv-knob::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 4px;
+      width: 2px;
+      height: 9px;
+      background: #241608;
+      transform: translateX(-50%)
+    }
+
+    .tv-tiny {
+      font-family: var(--type);
+      font-size: 6px;
+      letter-spacing: .14em;
+      color: var(--gold)
+    }
+
+    .badge {
+      font-family: var(--type);
+      font-size: 7px;
+      letter-spacing: .1em;
+      color: #f6e3d7;
+      border: 1px solid var(--gold-dk);
+      padding: 2px 4px;
+      border-radius: 2px
+    }
+
+    .tv-switches {
+      display: flex;
+      gap: 6px
+    }
+
+    .tv-switches span {
+      width: 6px;
+      height: 11px;
+      background: var(--gold);
+      opacity: .85
+    }
+
+    .tv-grille {
+      width: 86%;
+      flex: 1;
+      min-height: 50px;
+      background: repeating-linear-gradient(180deg, var(--gold) 0 2px, transparent 2px 6px);
+      border-radius: 2px;
+      opacity: .85
+    }
+
+    .tv-dots {
+      display: flex;
+      gap: 5px
+    }
+
+    .tv-dots span {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--gold)
+    }
+
+    .tv::after {
+      content: "";
+      display: block;
+      height: 14px;
+      margin-top: 8px;
+      background: radial-gradient(ellipse at center, rgba(0, 0, 0, .55), transparent 70%)
+    }
+
+    /* lightweight retro secondary CTA button */
+    .details-link {
+      margin: 22px auto 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: var(--type);
+      font-size: var(--fs-details);
+      letter-spacing: .22em;
+      text-indent: .22em;
+      text-transform: uppercase;
+      line-height: normal;
+      color: rgba(246, 234, 214, 0.88);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 12px 20px;
+      border: 1px solid rgba(202, 162, 90, 0.45);
+      border-radius: 20px;
+      box-shadow: none !important;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity 1s ease, transform .25s ease, border-color .25s ease, background .25s ease, color .25s ease;
+      cursor: pointer;
+    }
+
+    .details-link:hover {
+      background: rgba(202, 162, 90, 0.15);
+      border-color: var(--gold);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .details-link:active {
+      transform: translateY(1px);
+    }
+
+    body.show-details .details-link {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+      animation: softPulse 3.5s 1.5s infinite ease-in-out;
+    }
+
+    /* ══════════ SCENE 2 — COLLAGE ══════════ */
+    .details {
+      padding: 64px 20px 30px;
+      text-align: center
+    }
+
+    .married {
+      font-family: var(--script);
+      font-weight: 400;
+      font-size: var(--fs-married);
+      line-height: 1.25;
+      color: var(--white);
+      white-space: pre-line;
+      min-height: 2.5em;
+      text-shadow: 0 0 14px rgba(255, 170, 185, .3)
+    }
+
+    .collage {
+      position: relative;
+      height: 560px;
+      margin: 22px 0 4px
+    }
+
+    .collage>div {
+      position: absolute;
+      opacity: 0;
+      transform: translateY(20px) rotate(var(--r0, 0deg));
+      transition: opacity 1.2s ease var(--d, 0s), transform 1.2s ease var(--d, 0s)
+    }
+
+    .collage>div.in {
+      opacity: 1;
+      transform: translateY(0) rotate(var(--r, 0deg))
+    }
+
+    .envelope {
+      left: 10%;
+      top: 40px;
+      width: 80%;
+      height: 200px;
+      background: #ead7b6;
+      border-radius: 4px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, .3);
+      z-index: 1
+    }
+
+    .envelope::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 62%;
+      background: linear-gradient(#f2e3c6, #e6d2ae);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      filter: drop-shadow(0 2px 2px rgba(90, 60, 20, .45))
+    }
+
+    .envelope::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 4px;
+      background:
+        linear-gradient(to top right, transparent 49.7%, rgba(90, 60, 20, .28) 50%, transparent 50.3%) bottom left/50% 40% no-repeat,
+        linear-gradient(to top left, transparent 49.7%, rgba(90, 60, 20, .28) 50%, transparent 50.3%) bottom right/50% 40% no-repeat
+    }
+
+    .ticket {
+      left: 7%;
+      top: 20px;
+      width: 42%;
+      background: var(--cream);
+      border-radius: 10px;
+      padding: 16px 10px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, .35), 0 0 24px rgba(255, 230, 200, .12);
+      z-index: 2
+    }
+
+    .ticket::before,
+    .ticket::after {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--maroon);
+      bottom: 54px
+    }
+
+    .ticket::before {
+      left: -8px
+    }
+
+    .ticket::after {
+      right: -8px
+    }
+
+    .seal {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #f0d18a, #b98a4e 60%, #8a6132);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, .35)
+    }
+
+    .ticket-photo {
+      width: 80%;
+      aspect-ratio: 3/4.2;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid #fff;
+      box-shadow: 0 0 0 1px #d8c3a4, 0 0 18px rgba(255, 235, 205, .25)
+    }
+
+    .ticket-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .ticket-names {
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      color: var(--maroon);
+      text-transform: uppercase
+    }
+
+    .ticket-rule {
+      width: 100%;
+      border-top: 1px dashed #b49a76;
+      margin: 8px 0
+    }
+
+    .ticket-meta {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--type);
+      font-size: 8px;
+      letter-spacing: .06em;
+      line-height: 1.7;
+      color: #6d5133;
+      text-transform: uppercase
+    }
+
+    .ticket-meta span:last-child {
+      text-align: right
+    }
+
+    .barcode {
+      width: 92%;
+      height: 38px;
+      margin-top: 10px;
+      background: repeating-linear-gradient(90deg, #241a10 0 2px, transparent 2px 4px, #241a10 4px 7px, transparent 7px 9px, #241a10 9px 10px, transparent 10px 13px)
+    }
+
+    .strip {
+      right: 12%;
+      top: -90px;
+      width: 25%;
+      background: #fbf6ec;
+      padding: 6px 6px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, .35), 0 0 24px rgba(255, 235, 205, .12);
+      z-index: 2
+    }
+
+    .strip img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover
+    }
+
+    .postcard {
+      left: 14%;
+      top: 245px;
+      width: 72%;
+      background: #fbf5e8;
+      border: 1px solid #e0ceb0;
+      border-radius: 4px;
+      display: flex;
+      padding: 12px 14px;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, .35), 0 0 26px rgba(255, 235, 205, .14);
+      z-index: 4;
+      text-align: left;
+      position: relative
+    }
+
+    .postcard::after {
+      content: "";
+      position: absolute;
+      left: 38%;
+      top: 10px;
+      bottom: 10px;
+      width: 1px;
+      background: rgba(180, 140, 90, .28)
+    }
+
+    .pc-left {
+      flex: 0 0 36%;
+      font-family: var(--script);
+      font-size: 28px;
+      line-height: 1.2;
+      color: #8c1f2f;
+      padding-top: 12px;
+      text-align: center
+    }
+
+    .pc-right {
+      flex: 1;
+      position: relative;
+      padding-top: 40px;
+      padding-left: 10px
+    }
+
+    .stamp {
+      position: absolute;
+      top: 2px;
+      right: 4px;
+      width: 46px;
+      height: 56px;
+      object-fit: cover;
+      transform: rotate(2deg);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, .3)
+    }
+
+    .postmark {
+      position: absolute;
+      top: 12px;
+      right: 30px;
+      width: 70px;
+      height: 40px;
+      opacity: .7
+    }
+
+    .hand {
+      font-family: var(--hand);
+      font-size: 15px;
+      line-height: 1.3;
+      color: #9c4a52;
+      border-bottom: 1px solid #d8c3a4;
+      padding-bottom: 2px;
+      margin-bottom: 9px
+    }
+
+    .formal {
+      margin-top: 20px;
+      font-style: italic;
+      font-size: var(--fs-formal);
+      line-height: 1.7;
+      color: var(--pink);
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 1.2s ease .2s, transform 1.2s ease .2s
+    }
+
+    .formal.in {
+      opacity: 1;
+      transform: none
+    }
+
+    /* ══════════ SCENE 3 — FINALE (photo background + overlaid text) ══════════ */
+    .soon {
+      position: relative;
+      min-height: 96vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 70px 20px
+    }
+
+    .soon-bg {
+      position: absolute;
+      inset: 0
+    }
+
+    .soon-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(var(--finale-gray)) sepia(var(--finale-sepia)) brightness(1.25) contrast(1.03) saturate(1.05);
+      animation: breathe 16s ease-in-out infinite alternate
+    }
+
+    .soon-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(59, 6, 14, .72), rgba(59, 6, 14, .5) 45%, rgba(43, 4, 10, .82))
+    }
+
+    .soon-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 1.4s ease, transform 1.4s ease
+    }
+
+    .soon-inner.in {
+      opacity: 1;
+      transform: none
+    }
+
+    .coming {
+      font-family: var(--type);
+      font-size: var(--fs-coming);
+      letter-spacing: .3em;
+      color: var(--pink);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, .8)
+    }
+
+    .count {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      margin-top: 18px
+    }
+
+    .unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 46px
+    }
+
+    .unit b {
+      font-weight: 500;
+      font-size: var(--fs-count);
+      color: #ffe9ea;
+      letter-spacing: .05em;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, .9)
+    }
+
+    .unit label {
+      font-family: var(--type);
+      font-size: 7px;
+      letter-spacing: .18em;
+      color: #f3b9c0;
+      margin-top: 5px;
+      text-shadow: 0 1px 6px rgba(0, 0, 0, .9)
+    }
+
+    .colon {
+      font-size: 24px;
+      color: #f3b9c0;
+      padding-bottom: 18px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, .8)
+    }
+
+    .contact {
+      margin-top: 28px;
+      font-style: italic;
+      font-size: var(--fs-contact);
+      line-height: 1.7;
+      color: #f6cdd3;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, .9)
+    }
+
+    .back {
+      margin-top: 28px;
+      font-family: var(--type);
+      font-size: 10px;
+      letter-spacing: .28em;
+      color: var(--pink);
+      text-shadow: 0 1px 6px rgba(0, 0, 0, .9)
+    }
+
+    /* ══════════ CASSETTE ══════════ */
+    .cassette {
+      position: fixed;
+      left: 14px;
+      bottom: 14px;
+      z-index: 80;
+      width: 74px;
+      height: 46px;
+      background: #2b1c10;
+      border: 1px solid var(--gold-dk);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, .5);
+      transform: scale(1.2);
+      transform-origin: bottom left;
+    }
+
+    .cassette .reel {
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      position: relative;
+      animation: spin 1.6s linear infinite;
+      animation-play-state: paused
+    }
+
+    .cassette .reel::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border: 1px dashed var(--gold);
+      border-radius: 50%
+    }
+
+    .cassette.playing .reel {
+      animation-play-state: running
+    }
+
+    .cassette .c-label {
+      position: absolute;
+      bottom: 3px;
+      font-family: var(--type);
+      font-size: 5px;
+      letter-spacing: .12em;
+      color: var(--gold)
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    @keyframes floatDown {
+      from {
+        opacity: 0;
+        transform: translateY(-28px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    @keyframes softPulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        border-color: rgba(202, 162, 90, 0.45)
+      }
+
+      50% {
+        opacity: .75;
+        border-color: rgba(202, 162, 90, 0.85)
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .6
+      }
+    }
+
+    @keyframes blink {
+
+      0%,
+      49% {
+        opacity: 1
+      }
+
+      50%,
+      100% {
+        opacity: .25
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    @keyframes breathe {
+      from {
+        transform: scale(1)
+      }
+
+      to {
+        transform: scale(1.07)
+      }
+    }
+
+    @keyframes dotGrow {
+      0% {
+        transform: scale(1);
+        opacity: 1
+      }
+
+      70% {
+        transform: scale(6);
+        opacity: 1
+      }
+
+      100% {
+        transform: scale(26);
+        opacity: 0
+      }
+    }
+
+    @keyframes crtline {
+      0% {
+        transform: scaleX(1);
+        opacity: 1
+      }
+
+      70% {
+        transform: scaleX(.15);
+        opacity: 1
+      }
+
+      100% {
+        transform: scaleX(0);
+        opacity: 0
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="room" id="room">
+    <p class="room-hint">TAP TO GET STARTED</p>
+  </div>
+  <div class="grain"></div>
+  <audio id="music" src="music.mp3" loop preload="auto" autoplay playsinline></audio>
+  <button id="cassette" class="cassette" aria-label="Play or pause music">
+    <span class="reel"></span><span class="reel"></span>
+    <span class="c-label">SIDE A • HIT PLAY</span>
+  </button>
+
+  <div class="app">
+    <!-- SCENE 1 -->
+    <section class="hero" id="top">
+      <p class="kicker">✦ &nbsp;YOU'RE INVITED&nbsp; ✦<br>TO THE WEDDING OF</p>
+      <h1 class="names" id="heroNames">Rachel &amp; Stephen</h1>
+
+      <div class="tv" id="tv" data-state="off">
+        <span class="ant a1"></span><span class="ant a2"></span>
+        <div class="tv-body">
+          <div class="tv-screenwrap">
+            <canvas id="staticCv" width="260" height="200"></canvas>
+            <img id="slide1" class="ph" alt="Couple photo 1">
+            <img id="slide2" class="ph" alt="Couple photo 2">
+            <img id="slide3" class="ph" alt="Couple photo 3">
+            <img id="slide4" class="ph" alt="Couple photo 4">
+            <div class="tv-flash"></div>
+            <div class="tv-word" id="tvWord"></div>
+            <div class="crt"></div>
+            <div class="crton"><i></i></div>
+            <p class="standby">PLEASE STAND BY • TURN SOUND ON</p>
+          </div>
+          <div class="tv-panel">
+            <div class="tv-knob"></div>
+            <span class="tv-tiny">TUNE • OFF</span>
+            <span class="badge" id="chBadge">CH 11·25</span>
+            <div class="tv-switches"><span></span><span></span></div>
+            <span class="tv-tiny">POWER</span>
+            <div class="tv-grille"></div>
+            <div class="tv-dots"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="details-link" id="detailsBtn">CLICK FOR MORE DETAILS</button>
+    </section>
+
+    <!-- SCENE 2 -->
+    <section class="details" id="details">
+      <h2 class="married" id="married"></h2>
+      <div class="collage" id="collage">
+        <div class="envelope" style="--r:-2deg;--r0:-6deg;--d:0s"></div>
+        <div class="ticket" style="--r:-5deg;--r0:-10deg;--d:.45s">
+          <span class="seal"></span>
+          <div class="ticket-photo"><img id="ticketImg" class="ph" alt="Couple portrait"></div>
+          <p class="ticket-names" id="ticketNames">Rachel &amp; Stephen</p>
+          <div class="ticket-rule"></div>
+          <div class="ticket-meta"><span id="ticketDate">NOVEMBER 25,<br>2026</span><span id="ticketVenue">THE PLAZA
+              HOTEL,<br>NEW YORK</span></div>
+          <div class="barcode"></div>
+        </div>
+        <div class="strip" style="--r:6deg;--r0:11deg;--d:.8s">
+          <img id="strip1" class="ph" alt="Strip photo 1">
+          <img id="strip2" class="ph" alt="Strip photo 2">
+          <img id="strip3" class="ph" alt="Strip photo 3">
+          <img id="strip4" class="ph" alt="Strip photo 4">
+        </div>
+        <div class="postcard" style="--r:3deg;--r0:8deg;--d:1.1s">
+          <div class="pc-left">Save<br>our<br>date!</div>
+          <div class="pc-right">
+            <img class="stamp" id="stampImg" src="stamp.jpg" alt="Postage stamp">
+            <svg class="postmark" viewBox="0 0 70 40">
+              <circle cx="48" cy="20" r="13" fill="none" stroke="#b3576a" stroke-width="2" />
+              <path d="M2 12q6-4 12 0t12 0" fill="none" stroke="#b3576a" stroke-width="1.3" />
+              <path d="M2 20q6-4 12 0t12 0" fill="none" stroke="#b3576a" stroke-width="1.3" />
+              <path d="M2 28q6-4 12 0t12 0" fill="none" stroke="#b3576a" stroke-width="1.3" />
+            </svg>
+            <p class="hand" id="pcVenue">The Plaza Hotel,<br>New York</p>
+            <p class="hand" id="pcDate">November 25, 2026<br>Wednesday</p>
+          </div>
+        </div>
+      </div>
+      <p class="formal" id="formal">Formal invitation to follow.</p>
+    </section>
+
+    <!-- SCENE 3 -->
+    <section class="soon" id="soon">
+      <div class="soon-bg"><img id="finaleImg" alt="Us"></div>
+      <div class="soon-inner" id="soonInner">
+        <p class="coming">HAPPENING SOON!</p>
+        <div class="count">
+          <div class="unit"><b id="cdM">0</b><label>MONTHS</label></div><span class="colon">:</span>
+          <div class="unit"><b id="cdD">0</b><label>DAYS</label></div><span class="colon">:</span>
+          <div class="unit"><b id="cdH">00</b><label>HOURS</label></div><span class="colon">:</span>
+          <div class="unit"><b id="cdMin">00</b><label>MINUTES</label></div><span class="colon">:</span>
+          <div class="unit"><b id="cdS">00</b><label>SECONDS</label></div>
+        </div>
+        <button class="back" id="backBtn">&lt; BACK TO TV</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    /* ═══════════════ ✏️ EDIT EVERYTHING HERE ═══════════════ */
+    const CONFIG = {
+      partner1: "Arjun",
+      partner2: "Aditi",
+      weddingDate: "2026-11-25T12:00:00",
+      venue: "The Art of Living International Centre",
+      city: "Bengaluru",
+      contactEmail: "arjranadelhi@gmail.com",
+      /* TV pacing controls (milliseconds / counts) */
+      tvTiming: {
+        staticMs: 2500,   // how long static snow shows (max 1500!)
+        flashes: 2,      // number of bright flashes before each photo
+        flashMs: 100,    // spacing of the flashes
+        holdMs: 1500,   // how long the settled photo stays
+        offMs: 4000    // CRT switch-off pause
+      }
+    };
+    const PHOTOS = {
+      tvSave: "photo-1.jpg", tvThe: "photo-2.jpg", tvDate: "photo-3.jpg", tvNum: "photo-4.jpg",
+      ticket: "photo-2.jpg",
+      strip: ["photo-5.jpg", "photo-6.jpg", "photo-7.jpg", "photo-9.jpg"],
+      finale: "photo-8.jpg"
+    };
+    /* ═══════════════════════════════════════════════════════ */
+    const $ = s => document.querySelector(s);
+    const T = CONFIG.tvTiming;
+
+    document.title = `${CONFIG.partner1} & ${CONFIG.partner2} — Save the Date`;
+    $('#heroNames').textContent = `${CONFIG.partner1} & ${CONFIG.partner2}`;
+    $('#ticketNames').textContent = `${CONFIG.partner1} & ${CONFIG.partner2}`;
+    const d = new Date(CONFIG.weddingDate);
+    const monthDay = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+    const year = d.getFullYear(), weekday = d.toLocaleDateString('en-US', { weekday: 'long' });
+    const MM = String(d.getMonth() + 1).padStart(2, '0'), DD = String(d.getDate()).padStart(2, '0'), YY = String(year).slice(-2);
+    $('#ticketDate').innerHTML = `${monthDay.toUpperCase()},<br>${year}`;
+    $('#ticketVenue').innerHTML = `${CONFIG.venue.toUpperCase()},<br>${CONFIG.city.toUpperCase()}`;
+    $('#pcVenue').innerHTML = `${CONFIG.venue},<br>${CONFIG.city}`;
+    $('#pcDate').innerHTML = `${monthDay}, ${year}<br>${weekday}`;
+    $('#chBadge').textContent = `CH ${MM}·${DD}`;
+
+    function placeholder(label) {
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><rect width='100%' height='100%' fill='#8f8f8f'/><rect x='5' y='5' width='390' height='390' fill='none' stroke='#fff' stroke-width='2' stroke-dasharray='7 7'/><text x='50%' y='52%' fill='#fff' font-family='sans-serif' font-size='16' text-anchor='middle'>${label}</text></svg>`;
+      return "data:image/svg+xml," + encodeURIComponent(svg);
+    }
+    function setPhoto(el, name) {
+      el.src = name;
+      el.addEventListener('error', () => { el.src = placeholder(name); }, { once: true });
+      if (el.complete && el.naturalWidth === 0) el.src = placeholder(name);
+    }
+    setPhoto($('#slide1'), PHOTOS.tvSave); setPhoto($('#slide2'), PHOTOS.tvThe);
+    setPhoto($('#slide3'), PHOTOS.tvDate); setPhoto($('#slide4'), PHOTOS.tvNum);
+    setPhoto($('#ticketImg'), PHOTOS.ticket);
+    ['strip1', 'strip2', 'strip3', 'strip4'].forEach((id, i) => setPhoto($('#' + id), PHOTOS.strip[i]));
+    setPhoto($('#stampImg'), 'stamp.jpg');
+    setPhoto($('#finaleImg'), PHOTOS.finale);
+
+    /* music + cassette */
+    const music = $('#music'), cassette = $('#cassette');
+    music.addEventListener('error', () => cassette.style.display = 'none');
+    music.addEventListener('play', () => cassette.classList.add('playing'));
+    music.addEventListener('pause', () => cassette.classList.remove('playing'));
+
+    function playAudio() {
+      const p = music.play();
+      if (p !== undefined) {
+        p.catch(() => {
+          // Autoplay policy prevented playback without prior user gesture
+        });
+      }
+    }
+
+    // Try playing immediately on page load
+    playAudio();
+
+    cassette.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (music.paused) { playAudio(); }
+      else { music.pause(); }
+    });
+
+    /* fine-grain static */
+    const cv = $('#staticCv'), ctx = cv.getContext('2d');
+    let heroVisible = true;
+    function drawStatic() {
+      const id = ctx.createImageData(cv.width, cv.height), p = id.data;
+      for (let i = 0; i < p.length; i += 4) { const v = Math.random() * 255 | 0; p[i] = p[i + 1] = p[i + 2] = v; p[i + 3] = 255; }
+      ctx.putImageData(id, 0, 0);
+    }
+    setInterval(() => { if (heroVisible) drawStatic(); }, 80);
+
+    /* TV engine: dark room → lights on → dot → flash → static → slides */
+    const tv = $('#tv'), flashEl = document.querySelector('.tv-flash'), wordEl = $('#tvWord');
+    let booted = false;
+    function boot() {
+      if (booted) return; booted = true;
+      document.body.classList.add('lit');                 // lights on
+      playAudio();
+      tv.dataset.state = "boot";                          // white dot grows
+      setTimeout(() => { flashEl.classList.add('on'); }, 850);
+      setTimeout(() => {
+        flashEl.classList.remove('on');
+        tv.dataset.state = "static";                      // snow ≤1.5s
+        setTimeout(() => { si = 1; runStep(); }, T.staticMs);
+      }, 1000);
+    }
+
+    ['click', 'touchstart', 'touchend', 'pointerdown', 'mousedown'].forEach(evt => {
+      window.addEventListener(evt, () => {
+        if (music.paused) playAudio();
+        boot();
+      }, { passive: true });
+    });
+
+    const slideOf = { save: '#slide1', the: '#slide2', date: '#slide3', num: '#slide4' };
+    const wordOf = { save: 'SAVE', the: 'THE', date: 'DATE', num: `${MM}.${DD}.${YY}` };
+    const steps = ['static', 'save', 'the', 'date', 'num'];
+    let si = 0;
+    let flashTimeouts = [];
+    function playPhoto(state, word) {
+      tv.dataset.state = state;
+      wordEl.textContent = word;
+      wordEl.classList.add('show');
+      flashEl.classList.remove('on');
+
+      flashTimeouts.forEach(clearTimeout);
+      flashTimeouts = [];
+
+      for (let k = 0; k < T.flashes; k++) {
+        flashTimeouts.push(setTimeout(() => {
+          flashEl.classList.add('on');
+        }, k * T.flashMs + 10));
+        flashTimeouts.push(setTimeout(() => {
+          flashEl.classList.remove('on');
+        }, k * T.flashMs + Math.round(T.flashMs * 0.5) + 10));
+      }
+    }
+    function runStep() {
+      const s = steps[si];
+      let dur;
+      if (s === 'static') {
+        tv.dataset.state = 'static';
+        flashEl.classList.remove('on');
+        wordEl.classList.remove('show');
+        wordEl.textContent = '';
+        dur = T.staticMs;
+      } else {
+        playPhoto(s, wordOf[s]);
+        dur = T.flashes * T.flashMs + T.holdMs;
+        if (s === 'num') {
+          setTimeout(() => document.body.classList.add('show-details'), dur);
+          return;
+        }
+      }
+      si++;
+      setTimeout(runStep, dur);
+    }
+
+    /* scrolling — only the buttons scroll */
+    $('#detailsBtn').addEventListener('click', () => {
+      document.body.classList.add('scrollable');
+      $('#details').scrollIntoView({ behavior: 'smooth' });
+    });
+    $('#backBtn').addEventListener('click', () => $('#top').scrollIntoView({ behavior: 'smooth' }));
+
+    /* typewriter + calm reveals */
+    const married = $('#married'), full = "We are getting\nmarried!";
+    let typed = false, marriedDone = false; const pending = [];
+    function typeIt() {
+      if (typed) return; typed = true; let i = 0;
+      (function tick() {
+        married.textContent = full.slice(0, i); i++;
+        if (i <= full.length) setTimeout(tick, 75);
+        else { marriedDone = true; pending.forEach(el => el.classList.add('in')); }
+      })();
+    }
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      if (e.target.id === 'married') typeIt();
+      else if (marriedDone) e.target.classList.add('in');
+      else pending.push(e.target);
+      io.unobserve(e.target);
+    }), { threshold: .2 });
+    io.observe(married);
+    document.querySelectorAll('.collage>div, #formal, #soonInner').forEach(el => io.observe(el));
+
+    /* countdown */
+    const pad = n => String(n).padStart(2, '0');
+    function tickCd() {
+      const now = new Date(), t = new Date(CONFIG.weddingDate);
+      let months = (t.getFullYear() - now.getFullYear()) * 12 + (t.getMonth() - now.getMonth());
+      let anchor = new Date(now); anchor.setMonth(anchor.getMonth() + months);
+      if (anchor > t) { months--; anchor = new Date(now); anchor.setMonth(anchor.getMonth() + months); }
+      if (months < 0) months = 0;
+      let rem = Math.max(0, t - anchor);
+      const days = Math.floor(rem / 864e5); rem -= days * 864e5;
+      const hrs = Math.floor(rem / 36e5); rem -= hrs * 36e5;
+      const min = Math.floor(rem / 6e4); rem -= min * 6e4;
+      const sec = Math.floor(rem / 1e3);
+      $('#cdM').textContent = months; $('#cdD').textContent = days;
+      $('#cdH').textContent = pad(hrs); $('#cdMin').textContent = pad(min); $('#cdS').textContent = pad(sec);
+    }
+    tickCd(); setInterval(tickCd, 1000);
+    new IntersectionObserver(es => es.forEach(e => heroVisible = e.isIntersecting), { threshold: .1 }).observe($('#top'));
+  </script>
+</body>
+
+</html>
