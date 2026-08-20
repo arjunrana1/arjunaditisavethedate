@@ -749,26 +749,28 @@
     }
 
     .formal-wrap {
-      margin-top: 0px;
+      margin-top: 8px; /* Pushes the whole block exactly 8px below the collage */
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: 6px;
       opacity: 0;
-      transform: translateY(14px);
-      transition: opacity 1.2s ease .2s, transform 1.2s ease .2s
+      transform: translateY(-15px); /* Starts hidden slightly above (under the postcard) */
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .formal-wrap.in {
       opacity: 1;
-      transform: none
+      transform: translateY(0);
     }
 
     .formal {
+      /* Removed opacity/transform from here so it doesn't conflict with the wrap */
       font-style: italic;
       font-size: var(--fs-formal);
       line-height: 1.7;
       color: var(--pink);
+      margin: 0;
     }
 
     .formal-arrow {
@@ -1384,7 +1386,36 @@
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) music.pause();
     });
+    /* Dynamically shrink the collage box so it hugs the postcard.
+       This ensures the 8px margin works perfectly on all screen sizes. */
+       const collageEl = $('#collage');
+    const postcardEl = collageEl ? collageEl.querySelector('.postcard') : null;
+
+    function fitCollage() {
+      if (!collageEl || !postcardEl) return;
+      
+      // Get the exact pixel positions on the screen
+      const collageRect = collageEl.getBoundingClientRect();
+      const postcardRect = postcardEl.getBoundingClientRect();
+      
+      // Calculate exact height needed to cover the postcard + 2px buffer for shadows
+      const newHeight = (postcardRect.bottom - collageRect.top) + 2;
+      collageEl.style.height = newHeight + 'px';
+    }
+
+    // Run on load, window resize, and when fonts finish loading (fonts change text height)
+    window.addEventListener('resize', fitCollage);
+    window.addEventListener('load', fitCollage);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(fitCollage);
+    }
+    
+    // Re-calculate after the postcard animation finishes sliding in
+    setTimeout(fitCollage, 2500);
+
   </script>
+
+  
 </body>
 
 </html>
