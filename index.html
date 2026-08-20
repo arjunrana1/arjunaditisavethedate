@@ -780,8 +780,15 @@
     }
 
     @keyframes arrowBob {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(6px); }
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(6px);
+      }
     }
 
     /* ══════════ SCENE 3 — FINALE (photo background + overlaid text) ══════════ */
@@ -1076,7 +1083,7 @@
     <!-- SCENE 1 -->
     <section class="hero" id="top">
       <p class="kicker">✦ &nbsp;YOU'RE INVITED&nbsp; ✦<br>TO THE WEDDING OF</p>
-      <h1 class="names" id="heroNames">Rachel &amp; Stephen</h1>
+      <h1 class="names" id="heroNames"></h1>
 
       <div class="tv" id="tv" data-state="off">
         <span class="ant a1"></span><span class="ant a2"></span>
@@ -1116,7 +1123,7 @@
         <div class="ticket" style="--r:-5deg;--r0:-10deg;--d:.45s">
           <span class="seal"></span>
           <div class="ticket-photo"><img id="ticketImg" class="ph" alt="Couple portrait"></div>
-          <p class="ticket-names" id="ticketNames">Rachel &amp; Stephen</p>
+          <p class="ticket-names" id="ticketNames"></p>
           <div class="ticket-rule"></div>
           <div class="ticket-meta"><span id="ticketDate">NOVEMBER 25,<br>2026</span><span id="ticketVenue">THE PLAZA
               HOTEL,<br>NEW YORK</span></div>
